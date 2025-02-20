@@ -30,3 +30,14 @@ Populate
 php artisan db:seed
 ```
 
+## Commands
+- Create
+    ```shell
+    php artisan make:command ResetUserPoints
+    ```
+  
+- Run
+    ```shell
+    php artisan users:reset-user-points
+    ```
+
