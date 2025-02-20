@@ -5,6 +5,7 @@
 npm run dev
 php artisan serve
 php artisan queue:work
+php artisan schedule:run
 ```
 
 ## Project Kickstart
