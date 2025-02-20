@@ -23,8 +23,14 @@ php artisan queue:work
     php artisan serve
     ```
 
+
   
-## Update Model
+## Database Model
+
+- New Model
+    ```shell
+    php artisan make:model Winner -m
+    ```
 
 - Add Migration
     ```shell
@@ -64,6 +70,20 @@ php artisan make:controller UserApiController
     ```shell
     php artisan queue:work
     ```
+  
+## Job Scheduler
+- Location: `routes/console.php`
+
+- List Schedulers
+    ```shell
+    php artisan schedule:list
+    ```
+
+- Run Scheduler
+    ```shell
+    php artisan schedule:run
+    ```
+
 
 ## Storage Directory
 
