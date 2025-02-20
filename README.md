@@ -1,5 +1,11 @@
 # Spring Leaderboard (Laravel|PHP)
 
+## Run Project
+```shell
+npm run dev
+php artisan serve
+```
+
 ## Project Kickstart
 - Start Project:
     ```shell
