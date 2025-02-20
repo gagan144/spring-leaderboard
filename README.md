@@ -11,10 +11,11 @@
     php artisan migrate
     ```
 
-- Migrate
+- Run Server
     ```shell
-    php artisan run
+    php artisan serve
     ```
+
   
 ## Update Model
 
@@ -40,4 +41,12 @@ php artisan db:seed
     ```shell
     php artisan users:reset-user-points
     ```
+  
+
+## Clear cache
+```shell
+php artisan route:cache
+php artisan config:clear
+php artisan cache:clear
+```
 
