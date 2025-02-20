@@ -15,6 +15,14 @@ class UserApiController extends Controller
         //$users = User::all();
         $users = User::orderBy('points', 'desc')->orderBy('name', 'asc')->get();
 
+        // Correct file_qrcode url
+        $users->map(function ($user) {
+            if ($user->file_qrcode) {
+                $user->file_qrcode = asset('storage/' . $user->file_qrcode);
+            }
+            return $user;
+        });
+
         // Return as JSON response
         return response()->json($users);
     }

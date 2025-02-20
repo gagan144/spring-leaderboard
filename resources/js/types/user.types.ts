@@ -6,8 +6,9 @@ export type UserData = {
     created_at: string;
     updated_at: string;
     age: number;
-    address: string;
+    address?: string;
     points: number;
+    file_qrcode?: number;
 };
 
 export type UsersByScoreData = Record<string, {

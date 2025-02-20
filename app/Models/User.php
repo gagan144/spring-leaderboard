@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Jobs\GenerateQRCodeJob;
 
 class User extends Authenticatable
 {
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'age',
         'address',
         'points',
+        'file_qrcode',
     ];
 
     /**
@@ -48,5 +50,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Dispatch jobs
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            GenerateQRCodeJob::dispatch($user);
+        });
     }
 }

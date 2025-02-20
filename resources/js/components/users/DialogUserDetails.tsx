@@ -70,6 +70,11 @@ const DialogUserDetails: React.FC<DialogUserDetailsProps> = (props) => {
                 <Box sx={{mt: 2}}>
                     <Typography fontWeight={600}>Address:</Typography>
                     <Typography>{props.user.address || "-"}</Typography>
+                    {
+                        props.user.file_qrcode && (
+                            <img src={props.user.file_qrcode} style={{height: "100px", marginTop: "10px"}} />
+                        )
+                    }
                 </Box>
 
                 <Box sx={{mt: 2}}>

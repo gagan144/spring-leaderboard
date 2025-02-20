@@ -4,6 +4,7 @@
 ```shell
 npm run dev
 php artisan serve
+php artisan queue:work
 ```
 
 ## Project Kickstart
@@ -52,12 +53,34 @@ php artisan make:controller UserApiController
     ```shell
     php artisan users:reset-user-points
     ```
-  
+
+## Create Job
+- Create
+    ```shell
+    php artisan make:job GenerateQRCodeJob
+    ```
+
+- Run worker
+    ```shell
+    php artisan queue:work
+    ```
+
+## Storage Directory
+
+- Create a symlink
+```shell
+php artisan storage:link
+```
 
 ## Clear cache
 ```shell
 php artisan route:cache
 php artisan config:clear
 php artisan cache:clear
+```
+
+## Add dependencies
+```shell
+composer require guzzlehttp/guzzle
 ```
 
