@@ -8,12 +8,16 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import {UserData} from "../types/user.types";
 import {UserAdapter} from "../adapters/user.adapaters";
 import DialogAddUser from "./users/DialogAddUser";
+import DialogUserDetails from "./users/DialogUserDetails";
 
 export const LeaderBoard:React.FC = (props) => {
 
     // States
     const [listUsers, setListUsers] = React.useState<UserData[]>([]);
+    const [selectedUser, setSelectedUser] = React.useState<UserData>();
+
     const [isOpenAddUser, setIsOpenAddUser] = React.useState<boolean>(false);
+    const [isOpenUserDetails, setIsOpenUserDetails] = React.useState<boolean>(false);
 
     // On Mount
     React.useEffect(()=>{
@@ -66,7 +70,15 @@ export const LeaderBoard:React.FC = (props) => {
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
-                                    <Typography>{user.name}</Typography>
+                                    <Typography
+                                        sx={{cursor: "pointer"}}
+                                        onClick={(evt)=>{
+                                            setSelectedUser(user);
+                                            setIsOpenUserDetails(true);
+                                        }}
+                                    >
+                                        {user.name}
+                                    </Typography>
                                 </TableCell>
                                 <TableCell>
                                     <Stack direction="row" spacing={1}>
@@ -117,6 +129,19 @@ export const LeaderBoard:React.FC = (props) => {
                 }
             </Box>
 
+
+            {
+                (selectedUser && isOpenUserDetails) && (
+                    <DialogUserDetails
+                        user={selectedUser}
+                        isOpen={isOpenUserDetails}
+                        onClose={()=>{
+                            setSelectedUser(undefined);
+                            setIsOpenUserDetails(false);
+                        }}
+                    />
+                )
+            }
         </Box>
     );
 };
