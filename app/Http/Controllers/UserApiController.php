@@ -82,4 +82,23 @@ class UserApiController extends Controller
         // Return
         return response()->json(['message' => 'User was removed']);
     }
+
+    public function reportUserByScores(){
+        /*
+         API to group users by score and return aggregated values.
+         */
+        $groupedUsers = User::select('name', 'points', 'age')
+            ->orderByDesc('points')
+            ->get()
+            ->groupBy('points')
+            ->map(function ($group) {
+                return [
+                    'names' => $group->pluck('name')->all(),
+                    'average_age' => round($group->avg('age'))
+                ];
+            });
+
+        // Return
+        return response()->json($groupedUsers);
+    }
 }

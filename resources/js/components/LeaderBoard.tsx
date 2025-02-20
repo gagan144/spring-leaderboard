@@ -1,11 +1,28 @@
 import React from 'react';
-import {Box, Table, TableBody, TableCell, TableRow, Typography, IconButton, Stack, Chip, Button} from "@mui/material";
+import {
+    Box,
+    Table,
+    TableBody,
+    TableHead,
+    TableCell,
+    TableRow,
+    Typography,
+    IconButton,
+    Stack,
+    Chip,
+    Button,
+    Card,
+    CardContent,
+} from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import RemoveCircleOutlineRoundedIcon from '@mui/icons-material/RemoveCircleOutlineRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
-import {UserData} from "../types/user.types";
+import {UserData, UsersByScoreData} from "../types/user.types";
 import {UserAdapter} from "../adapters/user.adapaters";
 import DialogAddUser from "./users/DialogAddUser";
 import DialogUserDetails from "./users/DialogUserDetails";
@@ -14,6 +31,7 @@ export const LeaderBoard:React.FC = (props) => {
 
     // States
     const [listUsers, setListUsers] = React.useState<UserData[]>([]);
+    const [dataUsersByScores, setDataUsersByScores] = React.useState<UsersByScoreData>({});
     const [selectedUser, setSelectedUser] = React.useState<UserData>();
 
     const [isOpenAddUser, setIsOpenAddUser] = React.useState<boolean>(false);
@@ -22,6 +40,7 @@ export const LeaderBoard:React.FC = (props) => {
     // On Mount
     React.useEffect(()=>{
         getUsers();
+        getReportUsersByScores();
     }, []);
 
     // Methods
@@ -30,6 +49,12 @@ export const LeaderBoard:React.FC = (props) => {
             setListUsers(data);
         }).catch((error)=>{
             alert("Error fetching users:\n"+JSON.stringify(error.response.data))
+        })
+    }
+
+    const getReportUsersByScores = ()=>{
+        UserAdapter.reports.usersByScores().then((data)=>{
+            setDataUsersByScores(data);
         })
     }
 
@@ -129,7 +154,64 @@ export const LeaderBoard:React.FC = (props) => {
                 }
             </Box>
 
+            <Grid container sx={{mt:3, mb:3}}>
+                <Grid size={6}>
+                    <Card>
+                        <CardContent>
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={1}
+                                >
+                                    <InsightsRoundedIcon sx={{mr: 1}} />
+                                    <Typography fontWeight={600}>
+                                        Users Grouped by Scores
+                                    </Typography>
+                                </Stack>
+                                <IconButton onClick={(evt)=> getReportUsersByScores()}>
+                                    <RefreshRoundedIcon />
+                                </IconButton>
+                            </Stack>
 
+                            <Table size="small" sx={{mt:1}}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Score</TableCell>
+                                        <TableCell>Names</TableCell>
+                                        <TableCell>Average Age</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        Object.entries(dataUsersByScores)
+                                            .sort(([pointA], [pointB]) => Number(pointB) - Number(pointA))
+                                            .map(([points, details]) => (
+                                            <TableRow>
+                                                <TableCell>
+                                                    <Typography>{points}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography>{details.names.join(", ")}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography>{details.average_age}</Typography>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    }
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            {/*----- Dialogs -----*/}
             {
                 (selectedUser && isOpenUserDetails) && (
                     <DialogUserDetails
@@ -142,6 +224,7 @@ export const LeaderBoard:React.FC = (props) => {
                     />
                 )
             }
+            {/*----- Dialogs -----*/}
         </Box>
     );
 };

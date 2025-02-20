@@ -31,7 +31,12 @@ Populate
 php artisan db:seed
 ```
 
-## Commands
+## Create Controller
+```shell
+php artisan make:controller UserApiController
+```
+
+## Laravel Commands
 - Create
     ```shell
     php artisan make:command ResetUserPoints

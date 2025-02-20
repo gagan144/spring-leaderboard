@@ -1,5 +1,5 @@
 import axios from "axios";
-import {UserData} from "../types/user.types";
+import {UserData, UsersByScoreData} from "../types/user.types";
 
 export const UserAdapter = {
     async getList(){
@@ -48,5 +48,14 @@ export const UserAdapter = {
         ).then((response)=>{
             return response.data;
         })
+    },
+    reports: {
+        async usersByScores(){
+            return axios.get(
+                '/api/users/reports/users-by-score'
+            ).then((response)=>{
+                return response.data as UsersByScoreData;
+            })
+        }
     }
 }

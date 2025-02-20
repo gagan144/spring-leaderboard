@@ -27,7 +27,7 @@ const DialogUserDetails: React.FC<DialogUserDetailsProps> = (props) => {
             fullScreen={false}
             scroll={"paper"}
             open={props.isOpen}
-            // onClose={props.onClose}
+            onClose={props.onClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >

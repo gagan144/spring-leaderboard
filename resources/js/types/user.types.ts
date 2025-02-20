@@ -9,3 +9,8 @@ export type UserData = {
     address: string;
     points: number;
 };
+
+export type UsersByScoreData = Record<string, {
+    names: string[],
+    average_age: number;
+}>
