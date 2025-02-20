@@ -22,17 +22,31 @@ export const LeaderBoard:React.FC = (props) => {
     const getUsers = () => {
         UserAdapter.getList().then((data)=>{
             setListUsers(data);
+        }).catch((error)=>{
+            alert("Error fetching users:\n"+JSON.stringify(error.response.data))
         })
     }
 
     // Events
-    const updatePoints = (user: UserData, isIncrease: boolean) => {
+    const OnUpdateUserPoints = (user: UserData, isIncrease: boolean) => {
         UserAdapter.updatePoints(
             user.id,
             isIncrease?"increase":"decrease"
         ).then((data)=>{
             getUsers();
+        }).catch((error)=>{
+            alert("Error updating points:\n"+JSON.stringify(error.response.data))
         })
+    }
+
+    const onDeleteUser = (user: UserData) => {
+        if(confirm("Are you sure you want to remove this user?")){
+            UserAdapter.deleteUser(user.id).then((data)=>{
+                getUsers();
+            }).catch((error)=>{
+                alert("Error deleting user:\n"+JSON.stringify(error.response.data))
+            });
+        }
     }
 
     return (
@@ -43,7 +57,9 @@ export const LeaderBoard:React.FC = (props) => {
                         listUsers.sort((a:UserData,b:UserData)=>{return b.points > a.points?1:-1}).map((user: UserData, idx: number)=> {
                             return <TableRow key={idx}>
                                 <TableCell>
-                                    <IconButton color="error">
+                                    <IconButton color="error" onClick={(evt)=>{
+                                        onDeleteUser(user);
+                                    }}>
                                         <DeleteOutlineRoundedIcon />
                                     </IconButton>
                                 </TableCell>
@@ -52,10 +68,14 @@ export const LeaderBoard:React.FC = (props) => {
                                 </TableCell>
                                 <TableCell>
                                     <Stack direction="row" spacing={1}>
-                                        <IconButton color="warning" onClick={(evt)=>updatePoints(user, false)}>
+                                        <IconButton
+                                            color="warning"
+                                            onClick={(evt)=>OnUpdateUserPoints(user, false)}
+                                            disabled={user.points===0}
+                                        >
                                             <RemoveCircleOutlineRoundedIcon />
                                         </IconButton>
-                                        <IconButton color="success" onClick={(evt)=>updatePoints(user, true)}>
+                                        <IconButton color="success" onClick={(evt)=>OnUpdateUserPoints(user, true)}>
                                             <AddCircleOutlineRoundedIcon />
                                         </IconButton>
                                     </Stack>

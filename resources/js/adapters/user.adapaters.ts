@@ -21,5 +21,14 @@ export const UserAdapter = {
         ).then((response)=>{
             return response.data;
         })
+    },
+    async deleteUser(
+        userId
+    ){
+        return axios.delete(
+            `/api/users/${userId}`
+        ).then((response)=>{
+            return response.data;
+        })
     }
 }

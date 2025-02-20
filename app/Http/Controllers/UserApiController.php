@@ -35,7 +35,11 @@ class UserApiController extends Controller
         if ($validated['action'] === 'increase') {
             $user->points += 1; // Assuming you have a points field
         } elseif ($validated['action'] === 'decrease') {
-            $user->points -= 1;
+            if($user->points == 0){
+                return response()->json(['message' => 'Points cannot be negative'], 400);
+            }else{
+                $user->points -= 1;
+            }
         }
 
         // Save the updated user points
@@ -43,5 +47,19 @@ class UserApiController extends Controller
 
         // Return a success response
         return response()->json(['message' => 'User points updated successfully', 'user' => $user]);
+    }
+
+    public function delete($id, Request $request){
+        // Find the user by ID
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Delete User
+        $user->delete();
+
+        // Return
+        return response()->json(['message' => 'User was removed']);
     }
 }
