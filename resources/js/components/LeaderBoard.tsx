@@ -7,11 +7,13 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 import {UserData} from "../types/user.types";
 import {UserAdapter} from "../adapters/user.adapaters";
+import DialogAddUser from "./users/DialogAddUser";
 
 export const LeaderBoard:React.FC = (props) => {
 
     // States
     const [listUsers, setListUsers] = React.useState<UserData[]>([]);
+    const [isOpenAddUser, setIsOpenAddUser] = React.useState<boolean>(false);
 
     // On Mount
     React.useEffect(()=>{
@@ -54,7 +56,7 @@ export const LeaderBoard:React.FC = (props) => {
             <Table size="small">
                 <TableBody>
                     {
-                        listUsers.sort((a:UserData,b:UserData)=>{return b.points > a.points?1:-1}).map((user: UserData, idx: number)=> {
+                        listUsers.map((user: UserData, idx: number)=> {
                             return <TableRow key={idx}>
                                 <TableCell>
                                     <IconButton color="error" onClick={(evt)=>{
@@ -90,7 +92,29 @@ export const LeaderBoard:React.FC = (props) => {
             </Table>
 
             <Box sx={{mt:2}}>
-                <Button variant="contained" color="primary" startIcon={<AddRoundedIcon />}>Add User</Button>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddRoundedIcon />}
+                    onClick={(evt)=>{
+                        setIsOpenAddUser(true);
+                    }}
+                >
+                    Add User
+                </Button>
+
+                {
+                    isOpenAddUser && (
+                        <DialogAddUser
+                            isOpen={isOpenAddUser}
+                            onClose={()=>{setIsOpenAddUser(false)}}
+                            onSuccess={()=>{
+                                setIsOpenAddUser(false);
+                                getUsers();
+                            }}
+                        />
+                    )
+                }
             </Box>
 
         </Box>

@@ -9,6 +9,24 @@ export const UserAdapter = {
             return response.data as UserData[];
         })
     },
+    async addNewUser(
+        name: string,
+        email: string,
+        age: number,
+        address: string | null
+    ){
+        return axios.post(
+            '/api/users/add',
+            {
+                name,
+                email,
+                age,
+                address
+            }
+        ).then((response)=>{
+            return response.data
+        })
+    },
     async updatePoints(
         userId: number,
         action: "increase" | "decrease"
